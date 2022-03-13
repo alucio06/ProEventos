@@ -1,9 +1,51 @@
-<p>eventos works!</p>
+<h2>Eventos</h2>
+<hr>
 
-<div *ngFor="let evento of eventos">
-  <span>
-    <b>Tema:</b> {{ evento.tema }}
-    <b>Local:</b> {{ evento.local }}
-  </span>
-  <hr>
+<div class="mb-3 row">
+  <div class="col-sm-3">
+    <input [(ngModel)]="filterKeyword" (ngModelChange)="filterEvents()" type="text" class="form-control mr-2" placeholder="Buscar eventos...">
+  </div>
 </div>
+
+<table class="table table-striped">
+  <thead class="table-dark">
+    <tr>
+      <td>
+        <button type="button" class="btn btn-outline-light btn-sm" (click)="toggleImagesVisibilty()">
+          {{ !showImages ? 'Ocultar imagens' : 'Exibir imagens' }}
+        </button>
+      </td>
+      <td class="text-left">#</td>
+      <td class="text-left">Tema</td>
+      <td class="text-left">Local</td>
+      <td class="text-left">Data</td>
+      <td class="text-left">Qtd Pessoas</td>
+      <td class="text-left">Lote</td>
+      <td>Opções</td>
+    </tr>
+  </thead>
+  <tbody *ngIf="eventosFiltered && eventosFiltered.length > 0">
+    <tr *ngFor="let evento of eventosFiltered">
+      <td>
+        <img [collapse]="showImages" [isAnimated]="true"
+             src="../../assets/images/{{evento.imagemUrl}}" [style.width.px]="widthImg" [style.margin.px]="marginImg">
+      </td>
+      <td class="text-left">{{ evento.eventoId }}</td>
+      <td class="text-left">{{ evento.tema }}</td>
+      <td class="text-left">{{ evento.local }}</td>
+      <td class="text-left">{{ evento.dataEvento }}</td>
+      <td class="text-left">{{ evento.qtdPessoas }}</td>
+      <td class="text-left">{{ evento.lote }}</td>
+      <td>
+        <button type="button" class="btn btn-primary btn-sm mr-2" style="margin-right:10px">Editar</button>
+        <button type="button" class="btn btn-danger btn-sm">Excluir</button>
+      </td>
+  </tbody>
+  <tfoot *ngIf="!eventosFiltered.length">
+    <tr>
+      <td colspan="8" class="text-center">
+        <h4>Nenhum evento encontrado</h4>
+      </td>
+    </tr>
+  </tfoot>
+</table>
